@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/customers")
 public class CustomerController {
     private final CustomerRepository customerRepository;

@@ -1,18 +1,15 @@
 package me.ticketing_system.event;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/events")
 public class EventController {
     private final EventRepository eventRepository;
@@ -24,6 +21,17 @@ public class EventController {
     @GetMapping("/")
     public List<Event> getAll() {
         return eventRepository.findAll();
+    }
+
+    @GetMapping("/{eventId}")
+    public Event getById(@PathVariable String eventId) {
+        Optional<Event> event = eventRepository.findById(eventId);
+
+        if (event.isEmpty()) {
+            throw new EventNotFoundException();
+        }
+
+        return event.get();
     }
 
     @ResponseStatus(HttpStatus.CREATED)

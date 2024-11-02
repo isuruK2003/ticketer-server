@@ -15,7 +15,7 @@ public record Configuration(
         Integer maximumTicketCapacity
 ) {
     public Configuration {
-        if (totalTickets >  maximumTicketCapacity) {
+        if (totalTickets >=  maximumTicketCapacity) {
             throw new IllegalArgumentException("'totalTickets' should be less than or equal to 'maximumTicketCapacity'");
         }
 

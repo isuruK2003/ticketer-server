@@ -24,7 +24,7 @@ public class VendorController {
 
     @GetMapping("/vendorId")
     public Vendor getById(@PathVariable String vendorId) {
-        Optional<Vendor> vendor = vendorRepository.findByID(vendorId);
+        Optional<Vendor> vendor = vendorRepository.findById(vendorId);
 
         if (vendor.isEmpty()) {
             throw new VendorNotFoundException();

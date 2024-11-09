@@ -2,9 +2,13 @@ package me.ticketing_system.event;
 
 import java.time.LocalDateTime;
 
+import me.ticketing_system.vendor.Vendor;
+import me.ticketing_system.config.Configuration;
+
 public class Event {
-    private String configId;
-    private String vendorId;
+    private Configuration config;
+    private Vendor vendor;
+
     private String eventId;
     private String eventName;
     private String eventDescription;
@@ -12,10 +16,20 @@ public class Event {
     private LocalDateTime endDateTime;
     private String location;
 
-    public Event(String configId, String vendorId, String eventId, String eventName, String eventDescription,
+    public Event(String eventId, String eventName, String eventDescription,
             LocalDateTime startDateTime, LocalDateTime endDateTime, String location) {
-        this.configId = configId;
-        this.vendorId = vendorId;
+        this.eventId = eventId;
+        this.eventName = eventName;
+        this.eventDescription = eventDescription;
+        this.startDateTime = startDateTime;
+        this.endDateTime = endDateTime;
+        this.location = location;
+    }
+
+    public Event(Configuration config, Vendor vendor, String eventId, String eventName, String eventDescription,
+            LocalDateTime startDateTime, LocalDateTime endDateTime, String location) {
+        this.config = config;
+        this.vendor = vendor;
         this.eventId = eventId;
         this.eventName = eventName;
         this.eventDescription = eventDescription;
@@ -32,20 +46,20 @@ public class Event {
         this.eventId = eventId;
     }
 
-    public String getVendorId() {
-        return vendorId;
+    public Configuration getConfig() {
+        return config;
     }
 
-    public void setVendorId(String vendorId) {
-        this.vendorId = vendorId;
+    public void setConfig(Configuration config) {
+        this.config = config;
     }
 
-    public String getConfigId() {
-        return configId;
+    public Vendor getVendor() {
+        return vendor;
     }
 
-    public void setConfigId(String configId) {
-        this.configId = configId;
+    public void setVendor(Vendor vendor) {
+        this.vendor = vendor;
     }
 
     public String getEventName() {

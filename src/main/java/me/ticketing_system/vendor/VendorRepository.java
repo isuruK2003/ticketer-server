@@ -21,7 +21,7 @@ public class VendorRepository {
                 .list();
     }
 
-    public Optional<Vendor> findByID(String vendorId) {
+    public Optional<Vendor> findById(String vendorId) {
         return jdbcClient.sql("SELECT * FROM vendors WHERE vendorId = :vendorId ")
                 .param("vendorId", vendorId)
                 .query(Vendor.class)

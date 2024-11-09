@@ -39,4 +39,10 @@ public class EventController {
     public void create(@Valid @RequestBody Event newEvent) {
         eventRepository.createEvent(newEvent);
     }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{eventId}")
+    public void delete(@PathVariable String eventId) {
+        eventRepository.deleteEvent(eventId);
+    }
 }

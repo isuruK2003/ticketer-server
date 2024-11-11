@@ -1,5 +1,6 @@
 package me.ticketing_system.event;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,28 +23,38 @@ public class EventRepository {
         this.vendorRepository = new VendorRepository(jdbcClient);
     }
 
-    public List<Event> findAll() {
-        return jdbcClient.sql("SELECT * FROM events")
-                .query(Event.class)
-                .list();
+    public List<String> findEventIds() {
+        return jdbcClient.sql("SELECT eventId FROM events")
+                         .query(String.class)
+                         .list();
     }
 
-    public Optional<Event> findById(String eventId) {        
-        Event event = jdbcClient.sql("""
-                SELECT eventId, eventName, eventDescription, startDateTime, endDateTime, location, configId, vendorId
-                FROM events WHERE eventId = :eventId
-                """)
-            .param("eventId", eventId)
-            .query(Event.class)
-            .single();
+    public List<Event> findAll() {
+        List<String> eventIds = findEventIds();
+        List<Event> events = new ArrayList<>();
+        for (String eventId : eventIds) {
+            Optional<Event> eventOptional = findById(eventId);
+            eventOptional.ifPresent(events::add);
+        }
+        return events;
+    }
 
-        if (event == null) {
+    public Optional<Event> findById(String eventId) {
+        if (!this.findEventIds().contains(eventId)) {
             return Optional.empty();
         }
+        
+        Event event = jdbcClient
+        .sql("""
+            SELECT eventId, eventName, eventDescription, startDate, endDate, startTime, endTime, location, configId, vendorId
+            FROM events WHERE eventId = :eventId
+            """)
+        .param("eventId", eventId)
+        .query(Event.class)
+        .single();
 
-        String configId = jdbcClient.sql("""
-                SELECT configId FROM events WHERE eventId = :eventId
-                """)
+        String configId = jdbcClient
+            .sql("SELECT configId FROM events WHERE eventId = :eventId")
             .param("eventId", eventId)
             .query(String.class)
             .single();
@@ -63,8 +74,8 @@ public class EventRepository {
 
     public void createEvent(Event newEvent) {
         String sqlString = """
-                INSERT INTO events (configId, vendorId, eventId, eventName, eventDescription, startDateTime, endDateTime, location)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                INSERT INTO events (configId, vendorId, eventId, eventName, eventDescription, startDate, endDate, startTime, endTime, location)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """;
         int created = jdbcClient.sql(sqlString)
                 .params(List.of(
@@ -73,8 +84,10 @@ public class EventRepository {
                         newEvent.getEventId(),
                         newEvent.getEventName(),
                         newEvent.getEventDescription(),
-                        newEvent.getStartDateTime(),
-                        newEvent.getEndDateTime(),
+                        newEvent.getStartDate(),
+                        newEvent.getEndDate(),
+                        newEvent.getStartTime(),
+                        newEvent.getEndTime(),
                         newEvent.getLocation()))
                 .update();
         Assert.state(created == 1, "Failed to create the event: " + newEvent);

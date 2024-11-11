@@ -1,6 +1,10 @@
 package me.ticketing_system.event;
 
-import java.time.LocalDateTime;
+import java.sql.Date;
+import java.sql.Time;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import me.ticketing_system.vendor.Vendor;
 import me.ticketing_system.config.Configuration;
@@ -12,93 +16,71 @@ public class Event {
     private String eventId;
     private String eventName;
     private String eventDescription;
-    private LocalDateTime startDateTime;
-    private LocalDateTime endDateTime;
+    // @DateTimeFormat(pattern = "yyyy-mm-dd")
+    private Date startDate;
+    // @DateTimeFormat(pattern = "yyyy-mm-dd")
+    private Date endDate;
+    private Time startTime;
+    private Time endTime;
     private String location;
-
-    public Event(String eventId, String eventName, String eventDescription,
-            LocalDateTime startDateTime, LocalDateTime endDateTime, String location) {
+    
+    public Event(String eventId, String eventName, String eventDescription, Date startDate, Date endDate, Time startTime, Time endTime,
+            String location) {
         this.eventId = eventId;
         this.eventName = eventName;
         this.eventDescription = eventDescription;
-        this.startDateTime = startDateTime;
-        this.endDateTime = endDateTime;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.startTime = startTime;
+        this.endTime = endTime;
         this.location = location;
     }
-
-    public Event(Configuration config, Vendor vendor, String eventId, String eventName, String eventDescription,
-            LocalDateTime startDateTime, LocalDateTime endDateTime, String location) {
-        this.config = config;
-        this.vendor = vendor;
-        this.eventId = eventId;
-        this.eventName = eventName;
-        this.eventDescription = eventDescription;
-        this.startDateTime = startDateTime;
-        this.endDateTime = endDateTime;
-        this.location = location;
-    }
-
-    public String getEventId() {
-        return eventId;
-    }
-
-    public void setEventId(String eventId) {
-        this.eventId = eventId;
-    }
-
-    public Configuration getConfig() {
-        return config;
-    }
-
+    
     public void setConfig(Configuration config) {
         this.config = config;
-    }
-
-    public Vendor getVendor() {
-        return vendor;
     }
 
     public void setVendor(Vendor vendor) {
         this.vendor = vendor;
     }
 
-    public String getEventName() {
-        return eventName;
+    public String getEventId() {
+        return eventId;
     }
 
-    public void setEventName(String eventName) {
-        this.eventName = eventName;
+    public Configuration getConfig() {
+        return config;
+    }
+
+    public Vendor getVendor() {
+        return vendor;
+    }
+
+    public String getEventName() {
+        return eventName;
     }
 
     public String getEventDescription() {
         return eventDescription;
     }
 
-    public void setEventDescription(String eventDescription) {
-        this.eventDescription = eventDescription;
+    public Date getStartDate() {
+        return startDate;
+    }
+    
+    public Date getEndDate() {
+        return endDate;
     }
 
-    public LocalDateTime getStartDateTime() {
-        return startDateTime;
+    public Time getEndTime() {
+        return endTime;
     }
 
-    public void setStartDateTime(LocalDateTime startDateTime) {
-        this.startDateTime = startDateTime;
-    }
-
-    public LocalDateTime getEndDateTime() {
-        return endDateTime;
-    }
-
-    public void setEndDateTime(LocalDateTime endDateTime) {
-        this.endDateTime = endDateTime;
+    public Time getStartTime() {
+        return startTime;
     }
 
     public String getLocation() {
         return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
     }
 }

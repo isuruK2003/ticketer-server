@@ -21,4 +21,9 @@ public class TicketPool {
     public Ticket removeTicket() {
         return this.queue.removeFirst();
     }
+
+    // remove later
+    public Event getEvent() {
+        return event;
+    }
 }

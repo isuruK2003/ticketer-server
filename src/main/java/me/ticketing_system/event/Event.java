@@ -3,9 +3,6 @@ package me.ticketing_system.event;
 import java.sql.Date;
 import java.sql.Time;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
-
 import me.ticketing_system.vendor.Vendor;
 import me.ticketing_system.config.Configuration;
 

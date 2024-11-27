@@ -2,28 +2,18 @@ package me.ticketing_system.ticketpool;
 
 import java.util.Vector;
 
-import me.ticketing_system.event.Event;
-
 public class TicketPool {
-    private Event event;
-    private Vector<Ticket> queue;
+    private Vector<Ticket> tickets;
 
-
-    public TicketPool(Event event) {
-        this.event = event;
-        this.queue = new Vector<Ticket>(event.getConfig().maximumTicketCapacity());
+    public TicketPool() {
+        this.tickets = new Vector<Ticket>();
     }
 
     public void addTicket(Ticket ticket) {
-        this.queue.addLast(ticket);
+        this.tickets.addLast(ticket);
     }
 
     public Ticket removeTicket() {
-        return this.queue.removeFirst();
-    }
-
-    // remove later
-    public Event getEvent() {
-        return event;
+        return this.tickets.removeFirst();
     }
 }

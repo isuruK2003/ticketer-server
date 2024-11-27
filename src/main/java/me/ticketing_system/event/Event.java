@@ -21,8 +21,10 @@ public class Event {
     private Time endTime;
     private String location;
     
-    public Event(String eventId, String eventName, String eventDescription, Date startDate, Date endDate, Time startTime, Time endTime,
-            String location) {
+    public Event(String eventId, String eventName, 
+                 String eventDescription, Date startDate, 
+                 Date endDate, Time startTime, 
+                 Time endTime, String location) {
         this.eventId = eventId;
         this.eventName = eventName;
         this.eventDescription = eventDescription;
@@ -79,5 +81,12 @@ public class Event {
 
     public String getLocation() {
         return location;
+    }
+
+    @Override
+    public String toString() {
+        return "Event [config=" + config + ", vendor=" + vendor + ", eventId=" + eventId + ", eventName=" + eventName
+                + ", eventDescription=" + eventDescription + ", startDate=" + startDate + ", endDate=" + endDate
+                + ", startTime=" + startTime + ", endTime=" + endTime + ", location=" + location + "]";
     }
 }

@@ -20,7 +20,7 @@ public class TicketPoolController {
     @MessageMapping("/remove-ticket")
 	@SendTo("/topic/ticketpool")
 	public Vector<Ticket> removerTicket(Ticket ticket) {
-		this.ticketPoolService.addTicket(ticket);
+		this.ticketPoolService.removeTicket(ticket);
 		return this.ticketPoolService.getTicketPool();
 	}
 

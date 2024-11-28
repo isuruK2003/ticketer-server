@@ -1,47 +1,39 @@
 package me.ticketing_system.ticketpool;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.Vector;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
-import jakarta.validation.Valid;
-
-@RestController
-@RequestMapping("/ticketpool")
+@Controller
+@CrossOrigin
 public class TicketPoolController {
-    private final TicketPool ticketPool;
-    private BlockingQueue<TicketPoolAceess> accessQueue;
 
-    private final Logger log = LoggerFactory.getLogger(TicketPoolController.class);
+    TicketPoolService ticketPoolService;
 
     public TicketPoolController() {
-        this.ticketPool = new TicketPool();
-        this.accessQueue = new LinkedBlockingQueue<>();
-    }
-    
-    @GetMapping
-    public TicketPool getTicketPool() {
-        return this.ticketPool;
+        this.ticketPoolService = new TicketPoolService();
     }
 
-    @PostMapping("/add")
-    public void addTicket(@Valid @RequestBody TicketPoolAceess access) {
-        this.ticketPool.addTicket(access.ticket);
-        this.accessQueue.add(access);
-        log.info("Added ticket" + " " + this.accessQueue);
-    }
+    @MessageMapping("/remove-ticket")
+	@SendTo("/topic/ticketpool")
+	public Vector<Ticket> removerTicket(Ticket ticket) {
+		this.ticketPoolService.addTicket(ticket);
+		return this.ticketPoolService.getTicketPool();
+	}
 
-    @PostMapping("/remove")
-    public Ticket removeTicket(@Valid @RequestBody TicketPoolAceess acess) {
-        this.accessQueue.add(acess);
-        log.info("Removed ticket" + " " + this.accessQueue);
-        return this.ticketPool.removeTicket();
-    }
+    @MessageMapping("/add-ticket")
+	@SendTo("/topic/ticketpool")
+	public Vector<Ticket> addTicket(Ticket ticket) {
+		this.ticketPoolService.addTicket(ticket);
+		return this.ticketPoolService.getTicketPool();
+	}
+
+	@MessageMapping("/get-ticketpool")
+	@SendTo("/topic/ticketpool")
+	public Vector<Ticket> getTicketPool() {
+		return this.ticketPoolService.getTicketPool();
+	}
 }

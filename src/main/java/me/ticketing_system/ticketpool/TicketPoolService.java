@@ -8,17 +8,17 @@ import org.springframework.stereotype.Service;
 public class TicketPoolService {
 
     TicketPool ticketPool;
+    TicketPoolConfiguration ticketPoolConfiguration;
 
     public TicketPoolService() {
-        this.ticketPool = new TicketPool(100);
+        this.ticketPool = new TicketPool();
     }
 
-    public boolean removeTicket(Ticket ticket) {
+    public Ticket removeTicket() {
         try {
-            ticketPool.removeTicket(ticket);
-            return true;
+            return ticketPool.removeTicket();
         } catch (InterruptedException e) {
-            return false;
+            return null;
             // todo: add error logging
         }
 	}
@@ -36,4 +36,11 @@ public class TicketPoolService {
 	public Vector<Ticket> getTicketPool() {
 		return this.ticketPool.getTickets();
 	}
+
+    public TicketPoolConfiguration configureTicketpool(TicketPoolConfiguration config) {
+        this.ticketPoolConfiguration = config;
+        this.ticketPool.setMaxTicketCapacity(config.getMaximumTicketCapacity());
+        System.out.println("Added Configuration");
+        return config;
+    }
 }

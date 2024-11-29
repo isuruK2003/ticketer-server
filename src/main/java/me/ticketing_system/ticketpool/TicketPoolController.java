@@ -1,3 +1,4 @@
+
 package me.ticketing_system.ticketpool;
 
 import java.util.Vector;
@@ -11,20 +12,29 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @CrossOrigin
 public class TicketPoolController {
 
-    TicketPoolService ticketPoolService;
+	TicketPoolService ticketPoolService;
+	Ticket removedTicket;
 
-    public TicketPoolController() {
-        this.ticketPoolService = new TicketPoolService();
-    }
+	public TicketPoolController() {
+		this.ticketPoolService = new TicketPoolService();
+	}
 
-    @MessageMapping("/remove-ticket")
+	@MessageMapping("/get-removed-ticket")
+	@SendTo("topic/ticket-removal")
+	public Ticket broadCastTicketRemoval() {
+		Ticket ticketToSend = this.removedTicket;
+		this.removedTicket = null;
+		return ticketToSend;
+	}
+
+	@MessageMapping("/remove-ticket")
 	@SendTo("/topic/ticketpool")
-	public Vector<Ticket> removerTicket(Ticket ticket) {
-		this.ticketPoolService.removeTicket(ticket);
+	public Vector<Ticket> removeTicket() {
+		this.removedTicket = this.ticketPoolService.removeTicket();
 		return this.ticketPoolService.getTicketPool();
 	}
 
-    @MessageMapping("/add-ticket")
+	@MessageMapping("/add-ticket")
 	@SendTo("/topic/ticketpool")
 	public Vector<Ticket> addTicket(Ticket ticket) {
 		this.ticketPoolService.addTicket(ticket);
@@ -35,5 +45,11 @@ public class TicketPoolController {
 	@SendTo("/topic/ticketpool")
 	public Vector<Ticket> getTicketPool() {
 		return this.ticketPoolService.getTicketPool();
+	}
+
+	@MessageMapping("/configure-ticketpool")
+	@SendTo("/topic/ticketpool")
+	public TicketPoolConfiguration configureTicketpool(TicketPoolConfiguration config) {
+		return this.ticketPoolService.configureTicketpool(config);
 	}
 }

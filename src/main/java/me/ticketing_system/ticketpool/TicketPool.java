@@ -11,41 +11,49 @@ public class TicketPool {
     private Integer totalTicketsAvailable;
     private Integer maxTicketCapacity;
 
-    public TicketPool() {
-        this.tickets = new Vector<>();
-        this.maxTicketCapacity = 0;
-        this.totalTicketsAvailable = 0;
+    public TicketPool(TicketPoolConfiguration configuration) {
+        this.maxTicketCapacity = configuration.getMaximumTicketCapacity();
+        this.totalTicketsAvailable = configuration.getTotalTickets();
+        this.tickets = new Vector<>(this.maxTicketCapacity);
     }
 
-    public TicketPool(Integer maxTicketCapacity) {
-        this.tickets = new Vector<>(maxTicketCapacity);
-        this.maxTicketCapacity = maxTicketCapacity;
+    public TicketPool() {
+        this.tickets = new Vector<>();
+        this.maxTicketCapacity = -1;
         this.totalTicketsAvailable = 0;
     }
 
     public synchronized void addTicket(Ticket ticket) throws InterruptedException {
         while (this.tickets.size() == this.maxTicketCapacity) {
+            System.out.println("waiting for space ...");
             wait();
         }
         this.tickets.add(ticket);
+        System.out.println("Ticket Added: " + ticket);
+        notifyAll();
         this.totalTicketsAvailable++;
     }
     
-    public synchronized void removeTicket(Ticket ticketToRemove) throws InterruptedException {
+    public synchronized Ticket removeTicket() throws InterruptedException {
         while (this.tickets.size() == 0) {
+            System.out.println("waiting for new ticket...");
             wait();
         }
-
-        boolean removed = this.tickets.remove(ticketToRemove);
-        if (removed) {
-            this.totalTicketsAvailable--;
-            System.out.println("success");
-        } else {
-            System.out.println("not found");
-        }
+        Ticket removedTicket = this.tickets.removeLast();
+        System.out.println("Ticket Removed: " + removedTicket);
+        notifyAll();
+        return removedTicket;
     }    
 
     public Vector<Ticket> getTickets() {
         return tickets;
+    }
+
+    public void setMaxTicketCapacity(Integer maxTicketCapacity) {
+        this.maxTicketCapacity = maxTicketCapacity;
+        if (maxTicketCapacity < this.tickets.size()) {
+            return;
+        }
+        this.tickets.setSize(maxTicketCapacity);
     }
 }

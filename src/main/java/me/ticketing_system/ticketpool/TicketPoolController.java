@@ -23,7 +23,7 @@ public class TicketPoolController {
 	@MessageMapping("/remove-ticket")
 	@SendTo("/topic/ticketpool")
 	public Vector<Ticket> removeTicket() {
-		// should broadcast this removed ticket to the specifi
+		// should broadcast this removed ticket to the specific
 		Ticket removedTicket = this.ticketPoolService.removeTicket();
 		this.webSocketService.broadcastTicketRemoval(removedTicket);
 
@@ -45,8 +45,8 @@ public class TicketPoolController {
 
 	@MessageMapping("/configure-ticketpool")
 	@SendTo("/topic/ticketpool")
-	public TicketPoolConfiguration configureTicketpool(TicketPoolConfiguration config) {
-		return this.ticketPoolService.configureTicketpool(config);
+	public TicketPoolConfiguration configureTicketPool(TicketPoolConfiguration config) {
+		return this.ticketPoolService.configureTicketPool(config);
 	}
 
 	@MessageMapping("/stimulate-adding")

@@ -26,12 +26,10 @@ public class TicketPoolService {
         }
     }
 
-    public boolean addTicket(Ticket ticket) {
+    public void addTicket(Ticket ticket) {
         try {
             ticketPool.addTicket(ticket);
-            return true;
         } catch (InterruptedException e) {
-            return false;
             // todo: add error logging
         }
     }
@@ -40,7 +38,7 @@ public class TicketPoolService {
         return this.ticketPool.getTickets();
     }
 
-    public TicketPoolConfiguration configureTicketpool(TicketPoolConfiguration config) {
+    public TicketPoolConfiguration configureTicketPool(TicketPoolConfiguration config) {
         this.ticketPoolConfiguration = config;
         this.ticketPool.setMaxTicketCapacity(config.getMaximumTicketCapacity());
         System.out.println("Added Configuration");
@@ -54,8 +52,8 @@ public class TicketPoolService {
     }
 
     public void stimulateRemove() {
-        Consumer consumerThrad = new Consumer(this.ticketPool);
-        Thread t = new Thread(consumerThrad);
+        Consumer consumerThread = new Consumer(this.ticketPool);
+        Thread t = new Thread(consumerThread);
         t.start();
     }
 }

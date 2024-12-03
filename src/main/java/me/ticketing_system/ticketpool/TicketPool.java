@@ -1,7 +1,6 @@
 package me.ticketing_system.ticketpool;
 
 import java.util.Vector;
-
 import org.springframework.stereotype.Component;
 
 @Component
@@ -10,12 +9,6 @@ public class TicketPool {
     private final Vector<Ticket> tickets;
     private Integer totalTicketsAvailable;
     private Integer maxTicketCapacity;
-
-    public TicketPool(TicketPoolConfiguration configuration) {
-        this.maxTicketCapacity = configuration.getMaximumTicketCapacity();
-        this.totalTicketsAvailable = configuration.getTotalTickets();
-        this.tickets = new Vector<>(this.maxTicketCapacity);
-    }
 
     public TicketPool() {
         this.tickets = new Vector<>();
@@ -43,7 +36,7 @@ public class TicketPool {
         System.out.println("Ticket Removed: " + removedTicket);
         notifyAll();
         return removedTicket;
-    }    
+    }
 
     public Vector<Ticket> getTickets() {
         return tickets;

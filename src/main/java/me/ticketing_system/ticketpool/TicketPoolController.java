@@ -52,4 +52,18 @@ public class TicketPoolController {
 	public TicketPoolConfiguration configureTicketpool(TicketPoolConfiguration config) {
 		return this.ticketPoolService.configureTicketpool(config);
 	}
+
+	@MessageMapping("/stimulate-adding")
+	@SendTo("/topic/ticketpool")
+	public Vector<Ticket> stimulateAdding() {
+		this.ticketPoolService.stimulateAdd();
+		return this.ticketPoolService.getTicketPool();
+	}
+
+	@MessageMapping("/stimulate-removing")
+	@SendTo("/topic/ticketpool")
+	public Vector<Ticket> stimulateRemoving() {
+		this.ticketPoolService.stimulateRemove();
+		return this.ticketPoolService.getTicketPool();
+	}
 }

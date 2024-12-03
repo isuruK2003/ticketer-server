@@ -21,9 +21,9 @@ public class TicketPoolService {
             return null;
             // todo: add error logging
         }
-	}
+    }
 
-	public boolean addTicket(Ticket ticket) {
+    public boolean addTicket(Ticket ticket) {
         try {
             ticketPool.addTicket(ticket);
             return true;
@@ -31,16 +31,28 @@ public class TicketPoolService {
             return false;
             // todo: add error logging
         }
-	}
+    }
 
-	public Vector<Ticket> getTicketPool() {
-		return this.ticketPool.getTickets();
-	}
+    public Vector<Ticket> getTicketPool() {
+        return this.ticketPool.getTickets();
+    }
 
     public TicketPoolConfiguration configureTicketpool(TicketPoolConfiguration config) {
         this.ticketPoolConfiguration = config;
         this.ticketPool.setMaxTicketCapacity(config.getMaximumTicketCapacity());
         System.out.println("Added Configuration");
         return config;
+    }
+
+    public void stimulateAdd() {
+        Vendor vendorThread = new Vendor(this.ticketPool);
+        Thread t = new Thread(vendorThread);
+        t.start();
+    }
+
+    public void stimulateRemove() {
+        Consumer consumerThrad = new Consumer(this.ticketPool);
+        Thread t = new Thread(consumerThrad);
+        t.start();
     }
 }

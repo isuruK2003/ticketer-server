@@ -28,7 +28,7 @@ public class TicketPool {
     }
     
     public synchronized Ticket removeTicket() throws InterruptedException {
-        while (this.tickets.size() == 0) {
+        while (this.tickets.isEmpty()) {
             System.out.println("waiting for new ticket...");
             wait();
         }

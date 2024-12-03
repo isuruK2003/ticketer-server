@@ -13,24 +13,20 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 public class TicketPoolController {
 
 	TicketPoolService ticketPoolService;
-	Ticket removedTicket;
+	WebSocketService webSocketService;
 
-	public TicketPoolController() {
+	public TicketPoolController(WebSocketService webSocketService) {
 		this.ticketPoolService = new TicketPoolService();
-	}
-
-	@MessageMapping("/get-removed-ticket")
-	@SendTo("topic/ticket-removal")
-	public Ticket broadCastTicketRemoval() {
-		Ticket ticketToSend = this.removedTicket;
-		this.removedTicket = null;
-		return ticketToSend;
+		this.webSocketService = webSocketService;
 	}
 
 	@MessageMapping("/remove-ticket")
 	@SendTo("/topic/ticketpool")
 	public Vector<Ticket> removeTicket() {
-		this.removedTicket = this.ticketPoolService.removeTicket();
+		// should broadcast this removed ticket to the specifi
+		Ticket removedTicket = this.ticketPoolService.removeTicket();
+		this.webSocketService.broadcastTicketRemoval(removedTicket);
+
 		return this.ticketPoolService.getTicketPool();
 	}
 

@@ -4,6 +4,9 @@ import java.util.Vector;
 
 import org.springframework.stereotype.Service;
 
+import me.ticketing_system.simulation.Consumer;
+import me.ticketing_system.simulation.Vendor;
+
 @Service
 public class TicketPoolService {
 

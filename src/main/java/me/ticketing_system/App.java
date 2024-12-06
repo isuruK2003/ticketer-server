@@ -9,9 +9,6 @@ import me.ticketing_system.cli.Cli;
 
 @SpringBootApplication
 public class App {
-	private static Cli cli = new Cli();
-	private static Scanner scanner = new Scanner(System.in);
-
 	public static void main(String[] args) {
 		SpringApplication.run(App.class, args);
 	}

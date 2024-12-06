@@ -24,8 +24,8 @@ public class Simulation {
 
     Simulation(TicketPool ticketPool) {
         this.ticketPool = ticketPool;
-        this.vendorThreads = new ArrayList<Thread>();
-        this.consumerThreads = new ArrayList<Thread>();
+        this.vendorThreads = new ArrayList<>();
+        this.consumerThreads = new ArrayList<>();
         this.consumersStarted = false;
         this.vendorsStarted = false;
     }

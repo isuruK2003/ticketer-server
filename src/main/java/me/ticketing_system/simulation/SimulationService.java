@@ -1,69 +1,106 @@
 package me.ticketing_system.simulation;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import org.springframework.stereotype.Service;
 import me.ticketing_system.ticketpool.TicketPool;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 @Service
-public class SimulationService {
-    private final List<Thread> vendorThreads;
-    private final List<Thread> consumerThreads;
-    private final TicketPool ticketPool;
+public class SimulationService extends Simulation {
 
-    public SimulationService(TicketPool ticketPool) {
-        this.vendorThreads = Collections.synchronizedList(new ArrayList<>());
-        this.consumerThreads = Collections.synchronizedList(new ArrayList<>());
-        this.ticketPool = ticketPool;
+    private final SimulationValidator simulationValidator;
+    private final Logger logger = LoggerFactory.getLogger(SimulationService.class);
+
+    public SimulationService(TicketPool ticketPool, SimulationValidator simulationValidator) {
+        super(ticketPool);
+        this.simulationValidator = simulationValidator;
     }
 
-    private void initializeList(List<Thread> threadList, Integer count, Vendor vendorObject) {
-        for (int i = 0; i < count; i++) {
-            Thread t = new Thread(vendorObject);
-            threadList.add(t);
+    public void configureSimulation(SimulationConfiguration config) {
+        if (hasVendorsStarted() || hasConsumersStarted()) {
+            throw new RuntimeException("Simulation already started");
         }
+        simulationValidator.validate(config); // throws validation error if config is not invalid
+        this.setTotalTicketsForConsumer(config.totalTicketsForCustomer());
+        this.setTotalTicketsForVendor(config.totalTicketsForVendor());
+        this.setConsumerSleepTimeMillis(config.consumerSleepTime());
+        this.setVendorSleepTimeMillis(config.vendorSleepTime());
+        this.setTotalVendors(config.totalVendors());
+        this.setTotalConsumers(config.totalConsumer());
+        logger.info("Simulation configured Configured Successfully : {}", config);
     }
 
-    private void initializeList(List<Thread> threadList, Integer count, Consumer consumerObject) {
-        for (int i = 0; i < count; i++) {
-            Thread t = new Thread(consumerObject);
-            threadList.add(t);
+    public void initializeVendors() {
+        if (!this.hasConfigured()) {
+            throw new RuntimeException("Simulation is not configured");
         }
-    }
-
-    public void initializeAllLists(Integer vendorCount, Integer consumerCount) {
-        // initialize the vendor threads list:
-        initializeList(this.vendorThreads, vendorCount, new Vendor(this.ticketPool));
-        // initialize the consumer list
-        initializeList(this.vendorThreads, vendorCount, new Consumer(this.ticketPool));
-    }
-
-    private void executeThreads(List<Thread> threaList) {
-        for (Thread thread : threaList) {
-            thread.start();
+        if (this.hasVendorsStarted()) {
+            throw new RuntimeException("Vendor threads are already started");
         }
+        initializeVendorThreads();
+        logger.info("Vendor threads initialized Successfully ");
     }
 
-    private void deexecuteThreads(List<Thread> threaList) {
-        for (Thread thread : threaList) {
-            thread.stop();
+    public void initializeConsumers() {
+        if (!this.hasConfigured()) {
+            throw new RuntimeException("Simulation is not configured");
         }
+        if (this.hasVendorsStarted()) {
+            throw new RuntimeException("Vendor threads are already started");
+        }
+        initializeConsumerThreads();
+        logger.info("Consumer threads initialized Successfully ");
     }
 
-    public void startSimulation(Integer vendorCount, Integer consumerCount) {
-        initializeAllLists(vendorCount, consumerCount);
-        executeThreads(this.vendorThreads);
-        executeThreads(this.consumerThreads);
+    public void startVendors() {
+        if (!this.hasConfigured()) {
+            throw new RuntimeException("Simulation is not configured");
+        }
+        if (this.hasVendorsStarted()) {
+            throw new RuntimeException("Vendor threads are already started");
+        }
+        startVendorThreads();
+        logger.info("Vendor threads started Successfully ");
     }
 
-    public void endSimulation() {
-        deexecuteThreads(this.vendorThreads);
-        deexecuteThreads(this.consumerThreads);
+    public void startConsumers() {
+        if (!this.hasConfigured()) {
+            throw new RuntimeException("Simulation is not configured");
+        }
+        if (this.hasConsumersStarted()) {
+            throw new RuntimeException("Consumer threads are already started");
+        }
+        startConsumerThreads();
+        logger.info("Consumer threads started Successfully ");
     }
 
-    public TicketPool getTicketPool() {
-        return ticketPool;
+    public void stopVendors() {
+        if (!this.hasVendorsStarted()) {
+            throw new RuntimeException("Vendor threads are not started");
+        }
+        stopVendorThreads();
+        logger.info("Vendor threads stopped Successfully ");
+    }
+
+    public void stopConsumers() {
+        if (!this.hasConsumersStarted()) {
+            throw new RuntimeException("Consumer threads are not started");
+        }
+        stopConsumerThreads();
+        logger.info("Consumer threads stopped Successfully ");
+    }
+
+    public void clearVendors() {
+        if (this.hasVendorsStarted()) {
+            throw new RuntimeException("Vendor threads are already started");
+        }
+        clearVendorThreads();
+    }
+
+    public void clearConsumers() {
+        if (this.hasConsumersStarted()) {
+            throw new RuntimeException("Consumer threads are already started");
+        }
+        clearConsumerThreads();
     }
 }

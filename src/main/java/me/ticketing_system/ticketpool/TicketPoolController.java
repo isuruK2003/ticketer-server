@@ -23,10 +23,8 @@ public class TicketPoolController {
 	@MessageMapping("/remove-ticket")
 	@SendTo("/topic/ticketpool")
 	public Vector<Ticket> removeTicket() {
-		// should broadcast this removed ticket to the specific
 		Ticket removedTicket = this.ticketPoolService.removeTicket();
 		this.webSocketService.broadcastTicketRemoval(removedTicket);
-
 		return this.ticketPoolService.getTicketPool();
 	}
 
@@ -52,14 +50,14 @@ public class TicketPoolController {
 	@MessageMapping("/stimulate-adding")
 	@SendTo("/topic/ticketpool")
 	public Vector<Ticket> stimulateAdding() {
-		this.ticketPoolService.stimulateAdd();
+		// todo: Implement endpoint logic to start simulation
 		return this.ticketPoolService.getTicketPool();
 	}
 
 	@MessageMapping("/stimulate-removing")
 	@SendTo("/topic/ticketpool")
 	public Vector<Ticket> stimulateRemoving() {
-		this.ticketPoolService.stimulateRemove();
+		// todo: Implement endpoint logic to end simulation
 		return this.ticketPoolService.getTicketPool();
 	}
 }

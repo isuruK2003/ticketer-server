@@ -12,9 +12,7 @@ public class WebSocketService {
         this.messagingTemplate = messagingTemplate;
     }
 
-    // This method can be invoked anywhere in your service layer
     public void broadcastTicketRemoval(Ticket ticket) {
-        System.out.println("Broadcasted");
         messagingTemplate.convertAndSend("/topic/ticket-removed", ticket);
     }
 }

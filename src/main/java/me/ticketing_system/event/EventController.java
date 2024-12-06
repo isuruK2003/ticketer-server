@@ -26,11 +26,9 @@ public class EventController {
     @GetMapping("/{eventId}")
     public Event getById(@PathVariable String eventId) {
         Optional<Event> event = eventRepository.findById(eventId);
-
         if (event.isEmpty()) {
             throw new EventNotFoundException();
         }
-
         return event.get();
     }
 

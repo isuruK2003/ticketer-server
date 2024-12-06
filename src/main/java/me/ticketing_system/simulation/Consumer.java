@@ -1,29 +1,34 @@
 package me.ticketing_system.simulation;
 
+import me.ticketing_system.ticketpool.Ticket;
 import me.ticketing_system.ticketpool.TicketPool;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Consumer implements Runnable {
-    private TicketPool ticketPool;
-    private Integer sleepTimeMilli;
+    private final Integer consumerId;
+    private final TicketPool ticketPool;
+    private final Integer sleepTimeMilli;
+    private final Integer totalTickets;
+    private final Logger logger = LoggerFactory.getLogger(Consumer.class);
 
-    public Consumer(TicketPool ticketPool) {
-        this.ticketPool = ticketPool;
-    }
-
-    public Consumer(TicketPool ticketPool, Integer sleepTimeMilli) {
+    public Consumer(Integer consumerId, TicketPool ticketPool, Integer sleepTimeMilli, Integer totalTickets) {
+        this.consumerId = consumerId;
         this.ticketPool = ticketPool;
         this.sleepTimeMilli = sleepTimeMilli;
+        this.totalTickets = totalTickets;
     }
 
     @Override
     public void run() {
-        for (int i = 0; i < 10; i++) {
+        for (int i = this.totalTickets; i > 0 ; i--) {
             try {
-                this.ticketPool.removeTicket();
-                System.out.println("removed from thread");
+                Ticket removedTicket = this.ticketPool.removeTicket();
+                logger.info("Ticket removed by Consumer {}: {}", consumerId, removedTicket);
                 Thread.sleep(this.sleepTimeMilli);
             } catch (InterruptedException e) {
-                System.out.println("Interrupted Vendor");
+                logger.error("Error occurred at Consumer at run() : {}", e.getMessage());
+                break;
             }
         }
     }

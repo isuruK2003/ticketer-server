@@ -1,5 +1,6 @@
 package me.ticketing_system.ticketpool;
 
+import java.util.Collection;
 import java.util.Vector;
 
 import org.slf4j.Logger;

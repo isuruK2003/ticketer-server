@@ -1,4 +1,4 @@
-package me.ticketing_system.simulation;
+package me.ticketing_system;
 
 public record ValidationConstraint(
     String fieldName,

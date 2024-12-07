@@ -1,30 +1,34 @@
 package me.ticketing_system.cli;
 
-public class Cli {
-    public static final String logo = """
-            ████████╗██╗ ██████╗██╗  ██╗███████╗████████╗██╗███╗   ██╗ ██████╗\s
-            ╚══██╔══╝██║██╔════╝██║ ██╔╝██╔════╝╚══██╔══╝██║████╗  ██║██╔════╝\s
-               ██║   ██║██║     █████╔╝ █████╗     ██║   ██║██╔██╗ ██║██║  ███╗
-               ██║   ██║██║     ██╔═██╗ ██╔══╝     ██║   ██║██║╚██╗██║██║   ██║
-               ██║   ██║╚██████╗██║  ██╗███████╗   ██║   ██║██║ ╚████║╚██████╔╝
-               ╚═╝   ╚═╝ ╚═════╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚═╝╚═╝  ╚═══╝ ╚═════╝\s
-                                                                              \s
-            ███████╗██╗   ██╗███████╗████████╗███████╗███╗   ███╗             \s
-            ██╔════╝╚██╗ ██╔╝██╔════╝╚══██╔══╝██╔════╝████╗ ████║             \s
-            ███████╗ ╚████╔╝ ███████╗   ██║   █████╗  ██╔████╔██║             \s
-            ╚════██║  ╚██╔╝  ╚════██║   ██║   ██╔══╝  ██║╚██╔╝██║             \s
-            ███████║   ██║   ███████║   ██║   ███████╗██║ ╚═╝ ██║             \s
-            ╚══════╝   ╚═╝   ╚══════╝   ╚═╝   ╚══════╝╚═╝     ╚═╝             \s
-            """;
-    public static final String[] mainMenuItems = {
-            "Configure Simulation",
-            "Start Simulation",
-            "Stop Simulation"
-    };
+import me.ticketing_system.simulation.Simulation;
+import me.ticketing_system.simulation.SimulationConfiguration;
+import me.ticketing_system.simulation.SimulationService;
+import me.ticketing_system.ticketpool.TicketPool;
 
-    public static void displayMainMenu() {
-        for (int i = 0; i < mainMenuItems.length; i++) {
-            System.out.println("[" + i + "] " + mainMenuItems[i]);
-        }
+public class Cli extends CliUtilities {
+    private final static Simulation simulation = new Simulation(new TicketPool());
+
+    public static void init() {
+        System.out.println(logo);
+    }
+
+    public static void loop() {
+        String option = "";
+        do {
+            displayMainMenu();
+            option = CliUtilities.readStringInput("Enter the option: ");
+            if (option.equals("1")) {
+                SimulationConfiguration simulationConfiguration = new SimulationConfiguration(
+                        readIntegerInput("Total tickets for vendor: "),
+                        readIntegerInput("Total tickets for consumer: "),
+                        readIntegerInput("Total vendors: "),
+                        readIntegerInput("Total consumers: "),
+                        readIntegerInput("Vendor sleep time: "),
+                        readIntegerInput("Consumer sleep time: "));
+
+            } else {
+                System.out.println("Invalid option");
+            }
+        } while (!option.equals(exitKey));
     }
 }

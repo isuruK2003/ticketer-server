@@ -128,10 +128,6 @@ public class Simulation {
         );
     }
 
-    public Boolean hasVendorsInitialized() {
-        return !this.vendorThreads.isEmpty();
-    }
-
     public Boolean hasConsumersInitialized() {
         return !this.consumerThreads.isEmpty();
     }

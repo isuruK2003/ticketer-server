@@ -128,10 +128,6 @@ public class Simulation {
         );
     }
 
-    public Boolean hasConsumersInitialized() {
-        return !this.consumerThreads.isEmpty();
-    }
-
     public Boolean hasConsumersStarted() {
         return this.consumersStarted;
     }

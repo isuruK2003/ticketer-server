@@ -21,7 +21,7 @@ public class Consumer implements Runnable {
 
     @Override
     public void run() {
-        for (int i = this.totalTickets; i > 0 ; i--) {
+        for (int i = 0; i < this.totalTickets ; i++) {
             try {
                 Ticket removedTicket = this.ticketPool.removeTicket();
                 logger.info("Ticket removed by Consumer {}: {}", consumerId, removedTicket);

@@ -22,7 +22,7 @@ public class Simulation {
     private Boolean consumersStarted;
     private Boolean vendorsStarted;
 
-    Simulation(TicketPool ticketPool) {
+    public Simulation(TicketPool ticketPool) {
         this.ticketPool = ticketPool;
         this.vendorThreads = new ArrayList<>();
         this.consumerThreads = new ArrayList<>();

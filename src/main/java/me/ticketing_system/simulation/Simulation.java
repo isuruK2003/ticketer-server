@@ -145,4 +145,12 @@ public class Simulation {
                 this.ticketPool.getTickets().size()
         );
     }
+
+    public SimulationConfigurationStatus getSimulationConfigurationStatus() {
+        return new SimulationConfigurationStatus(
+                hasConfigured(),
+                hasVendorsStarted(),
+                hasConsumersStarted()
+        );
+    }
 }

@@ -12,7 +12,7 @@ public class SimulationWebSocketService {
         this.messagingTemplate = messagingTemplate;
     }
 
-    public void broadcastSimulationService(SimulationStatus simulationStatus) {
+    public void broadcastSimulationStatus(SimulationStatus simulationStatus) {
         messagingTemplate.convertAndSend("/topic/simulation/simulation-status", simulationStatus);
     }
 }

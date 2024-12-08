@@ -25,7 +25,7 @@ public class SimulationService extends Simulation {
         this.ticketPool.addListener(new TicketPoolListChangeListener() {
             @Override
             public void onSizeChanged(Integer newSize) {
-                simulationWebSocketService.broadcastSimulationService(getSimulationStatus());
+                simulationWebSocketService.broadcastSimulationStatus(getSimulationStatus());
                 logger.info("TicketPool Size Changed: {}", newSize);
             }
         });

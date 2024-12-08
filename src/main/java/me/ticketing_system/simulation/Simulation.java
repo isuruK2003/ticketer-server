@@ -10,7 +10,7 @@ import java.util.List;
 public class Simulation {
     private final List<Thread> vendorThreads;
     private final List<Thread> consumerThreads;
-    private final TicketPool ticketPool;
+    final TicketPool ticketPool;
 
     private Integer totalVendors;
     private Integer totalConsumers;

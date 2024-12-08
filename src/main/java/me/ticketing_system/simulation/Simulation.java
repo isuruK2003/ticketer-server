@@ -135,4 +135,14 @@ public class Simulation {
     public Boolean hasVendorsStarted() {
         return this.vendorsStarted;
     }
+
+    //// Getters ////
+
+    public SimulationStatus getSimulationStatus() {
+        return new SimulationStatus(
+                this.vendorThreads.size(),
+                this.consumerThreads.size(),
+                this.ticketPool.getTickets().size()
+        );
+    }
 }

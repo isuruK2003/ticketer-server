@@ -11,17 +11,22 @@ public class SimulationService extends Simulation {
 
     private final SimulationConfigurationValidator simulationValidator;
     private final Logger logger = LoggerFactory.getLogger(SimulationService.class);
+    private final SimulationWebSocketService simulationWebSocketService;
 
-    public SimulationService(TicketPool ticketPool, SimulationConfigurationValidator simulationValidator) {
+    public SimulationService(TicketPool ticketPool,
+                             SimulationConfigurationValidator simulationValidator,
+                             SimulationWebSocketService simulationWebSocketService) {
         super(ticketPool);
         this.simulationValidator = simulationValidator;
+        this.simulationWebSocketService = simulationWebSocketService;
     }
 
     public void subscribeToTicketPoolChanges() {
         this.ticketPool.addListener(new TicketPoolListChangeListener() {
             @Override
             public void onSizeChanged(Integer newSize) {
-                logger.info("New size of ticket pool: {}", newSize);
+                simulationWebSocketService.broadcastSimulationService(getSimulationStatus());
+                logger.info("TicketPool Size Changed: {}", newSize);
             }
         });
     }

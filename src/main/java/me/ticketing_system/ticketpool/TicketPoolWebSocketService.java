@@ -4,11 +4,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 @Service
-public class WebSocketService {
+public class TicketPoolWebSocketService {
 
     private final SimpMessagingTemplate messagingTemplate;
 
-    public WebSocketService(SimpMessagingTemplate messagingTemplate) {
+    public TicketPoolWebSocketService(SimpMessagingTemplate messagingTemplate) {
         this.messagingTemplate = messagingTemplate;
     }
 

@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class SimulationService extends Simulation {
 
-    private final SimulationValidator simulationValidator;
+    private final SimulationConfigurationValidator simulationValidator;
     private final Logger logger = LoggerFactory.getLogger(SimulationService.class);
 
-    public SimulationService(TicketPool ticketPool, SimulationValidator simulationValidator) {
+    public SimulationService(TicketPool ticketPool, SimulationConfigurationValidator simulationValidator) {
         super(ticketPool);
         this.simulationValidator = simulationValidator;
     }

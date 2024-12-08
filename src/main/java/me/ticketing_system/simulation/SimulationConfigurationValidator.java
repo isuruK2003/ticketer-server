@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 
 @Service
-public class SimulationValidator {
+public class SimulationConfigurationValidator {
     private final ValidationConstraintService constraintService;
 
-    public SimulationValidator(ValidationConstraintService validationConstraintService) {
+    public SimulationConfigurationValidator(ValidationConstraintService validationConstraintService) {
         this.constraintService = validationConstraintService;
     }
 

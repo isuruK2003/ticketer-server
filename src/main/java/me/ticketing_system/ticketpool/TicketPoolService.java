@@ -1,5 +1,6 @@
 package me.ticketing_system.ticketpool;
 
+import java.util.List;
 import java.util.Vector;
 
 import org.slf4j.Logger;
@@ -39,7 +40,7 @@ public class TicketPoolService {
         return config;
     }
 
-    public Vector<Ticket> getTicketPool() {
+    public List<Ticket> getTicketPool() {
         return this.ticketPool.getTickets();
     }
 }

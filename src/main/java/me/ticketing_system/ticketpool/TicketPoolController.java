@@ -1,7 +1,7 @@
 
 package me.ticketing_system.ticketpool;
 
-import java.util.Vector;
+import java.util.List;
 
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -22,7 +22,7 @@ public class TicketPoolController {
 
 	@MessageMapping("/remove-ticket")
 	@SendTo("/topic/ticketpool")
-	public Vector<Ticket> removeTicket() {
+	public List<Ticket> removeTicket() {
 		Ticket removedTicket = this.ticketPoolService.removeTicket();
 		this.webSocketService.broadcastTicketRemoval(removedTicket);
 		return this.ticketPoolService.getTicketPool();
@@ -30,14 +30,14 @@ public class TicketPoolController {
 
 	@MessageMapping("/add-ticket")
 	@SendTo("/topic/ticketpool")
-	public Vector<Ticket> addTicket(Ticket ticket) {
+	public List<Ticket> addTicket(Ticket ticket) {
 		this.ticketPoolService.addTicket(ticket);
 		return this.ticketPoolService.getTicketPool();
 	}
 
 	@MessageMapping("/get-ticketpool")
 	@SendTo("/topic/ticketpool")
-	public Vector<Ticket> getTicketPool() {
+	public List<Ticket> getTicketPool() {
 		return this.ticketPoolService.getTicketPool();
 	}
 
@@ -49,14 +49,14 @@ public class TicketPoolController {
 
 	@MessageMapping("/stimulate-adding")
 	@SendTo("/topic/ticketpool")
-	public Vector<Ticket> stimulateAdding() {
+	public List<Ticket> stimulateAdding() {
 		// todo: Implement endpoint logic to start simulation
 		return this.ticketPoolService.getTicketPool();
 	}
 
 	@MessageMapping("/stimulate-removing")
 	@SendTo("/topic/ticketpool")
-	public Vector<Ticket> stimulateRemoving() {
+	public List<Ticket> stimulateRemoving() {
 		// todo: Implement endpoint logic to end simulation
 		return this.ticketPoolService.getTicketPool();
 	}

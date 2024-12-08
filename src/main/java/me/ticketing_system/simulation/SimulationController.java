@@ -13,6 +13,7 @@ public class SimulationController {
 
     public SimulationController(SimulationService simulationService) {
         this.simulationService = simulationService;
+        this.simulationService.subscribeToTicketPoolChanges(); // todo: make this subscription to be done from the client side
     }
 
     //// Response Mapping ////

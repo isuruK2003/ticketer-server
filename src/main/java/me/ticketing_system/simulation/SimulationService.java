@@ -1,6 +1,7 @@
 package me.ticketing_system.simulation;
 
 import me.ticketing_system.ticketpool.TicketPool;
+import me.ticketing_system.ticketpool.TicketPoolListChangeListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,15 @@ public class SimulationService extends Simulation {
     public SimulationService(TicketPool ticketPool, SimulationConfigurationValidator simulationValidator) {
         super(ticketPool);
         this.simulationValidator = simulationValidator;
+    }
+
+    public void subscribeToTicketPoolChanges() {
+        this.ticketPool.addListener(new TicketPoolListChangeListener() {
+            @Override
+            public void onSizeChanged(Integer newSize) {
+                logger.info("New size of ticket pool: {}", newSize);
+            }
+        });
     }
 
     public void configureSimulation(SimulationConfiguration config) {
@@ -95,6 +105,7 @@ public class SimulationService extends Simulation {
             throw new RuntimeException("Vendor threads are already started");
         }
         clearVendorThreads();
+        logger.info("Vendor threads cleared successfully ");
     }
 
     public void clearConsumers() {
@@ -102,5 +113,6 @@ public class SimulationService extends Simulation {
             throw new RuntimeException("Consumer threads are already started");
         }
         clearConsumerThreads();
+        logger.info("Consumer threads cleared successfully ");
     }
 }

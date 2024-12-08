@@ -20,7 +20,7 @@ buildNumber.properties
 compose.yml
 schema.sql
 data.sql
-
+validation_constraints.json
 
 # Added by intellij
 # `````````````````

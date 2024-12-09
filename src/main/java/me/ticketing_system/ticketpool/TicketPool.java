@@ -31,25 +31,26 @@ public class TicketPool {
         }
         this.tickets.add(ticket);
         notifyAll();
-        notifyListeners();
+        notifyListeners(ticket);
     }
     
-    public synchronized Ticket removeTicket() throws InterruptedException {
+    public synchronized Ticket removeTicket(Integer removedByConsumerId) throws InterruptedException {
         while (this.tickets.isEmpty()) {
             logger.info("No tickets available. Waiting for a new ticket ... ");
             wait();
         }
         Ticket removedTicket = this.tickets.removeLast();
+        removedTicket.setConsumerId(removedByConsumerId);
         notifyAll();
-        notifyListeners();
+        notifyListeners(removedTicket);
         return removedTicket;
     }
 
     ///// TicketPool List Change Listener Notifier
 
-    private void notifyListeners() {
+    private void notifyListeners(Ticket changedTicket) {
         for (TicketPoolListChangeListener listener : ticketPoolChangeListeners) {
-            listener.onSizeChanged(this.tickets.size());
+            listener.onSizeChanged(changedTicket);
         }
     }
 

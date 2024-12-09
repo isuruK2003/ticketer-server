@@ -14,7 +14,7 @@ public class GlobalWebSocketConfiguration implements WebSocketMessageBrokerConfi
     @Override
     public void registerStompEndpoints(@NonNull StompEndpointRegistry registry) {
         registry.addEndpoint("/ticketing-system")
-                .setAllowedOrigins("http://localhost:4200/")
+                .setAllowedOrigins("http://localhost:4200/", "http://127.0.0.1:5500")
                 .withSockJS();
     }
 

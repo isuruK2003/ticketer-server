@@ -140,6 +140,7 @@ public class Simulation {
 
     public SimulationStatus getSimulationStatus() {
         return new SimulationStatus(
+                null,
                 this.vendorThreads.size(),
                 this.consumerThreads.size(),
                 this.ticketPool.getTickets().size()

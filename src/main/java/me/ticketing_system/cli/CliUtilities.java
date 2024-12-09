@@ -1,61 +1,44 @@
 package me.ticketing_system.cli;
 
+import jakarta.validation.ValidationException;
+import me.ticketing_system.GlobalConstants;
+import me.ticketing_system.ValidationConstraint;
+import me.ticketing_system.ValidationConstraintService;
+import me.ticketing_system.simulation.SimulationConfigurationValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Map;
 import java.util.Scanner;
 
 public class CliUtilities {
 
-    public static final String logo = """
-             _____            _ _   _                  _______ _      _        _     __  __                                                   _      _____           _                \s
-            |  __ \\          | | | (_)                |__   __(_)    | |      | |   |  \\/  |                                                 | |    / ____|         | |               \s
-            | |__) |___  __ _| | |_ _ _ __ ___   ___     | |   _  ___| | _____| |_  | \\  / | __ _ _ __   __ _  __ _  ___ _ __ ___   ___ _ __ | |_  | (___  _   _ ___| |_ ___ _ __ ___ \s
-            |  _  // _ \\/ _` | | __| | '_ ` _ \\ / _ \\    | |  | |/ __| |/ / _ \\ __| | |\\/| |/ _` | '_ \\ / _` |/ _` |/ _ \\ '_ ` _ \\ / _ \\ '_ \\| __|  \\___ \\| | | / __| __/ _ \\ '_ ` _ \\\s
-            | | \\ \\  __/ (_| | | |_| | | | | | |  __/    | |  | | (__|   <  __/ |_  | |  | | (_| | | | | (_| | (_| |  __/ | | | | |  __/ | | | |_   ____) | |_| \\__ \\ ||  __/ | | | | |
-            |_|  \\_\\___|\\__,_|_|\\__|_|_| |_| |_|\\___|    |_|  |_|\\___|_|\\_\\___|\\__| |_|  |_|\\__,_|_| |_|\\__,_|\\__, |\\___|_| |_| |_|\\___|_| |_|\\__| |_____/ \\__, |___/\\__\\___|_| |_| |_|
-                                                                                                               __/ |                                        __/ |                     \s
-                                                                                                              |___/                                        |___/                      \s                                                    \s
-            """;
-
-    public static final String[] mainMenuItems = {
-            "Configure Simulation",
-            "Start Simulation",
-            "Stop Simulation"
-    };
-
-    public static String exitKey = "e";
-
-    public static void displayMainMenu() {
-        for (int i = 0; i < mainMenuItems.length; i++) {
-            System.out.println("[" + i + "] " + mainMenuItems[i]);
-        }
-    }
-
     private static final Scanner scanner = new Scanner(System.in);
+    private static final Logger logger = LoggerFactory.getLogger(CliUtilities.class);
+    private static final Map<String, ValidationConstraint> validationConstraints = readValidatorConstraints();
 
-    public static String readStringInput(String prompt) {
-        String userInput = "";
-        while (true) {
-            System.out.println(prompt);
-            userInput = scanner.nextLine().trim();
-            if (userInput.isBlank()) {
-                System.out.println("Error: Cannot be blank");
-                continue;
-            }
-            break;
+    private static Map<String, ValidationConstraint> readValidatorConstraints() {
+        try {
+            return ValidationConstraintService.loadFromJson();
+        } catch (RuntimeException e) {
+            logger.error("Cannot read the {}: ", GlobalConstants.validationConstraintsFileName + ": " + e.getMessage());
         }
-        return userInput;
+        return null;
     }
 
-    public static Integer readIntegerInput(String prompt) {
-        Integer userInput = null;
+    public static Integer readConfigurationValue(String fieldName) {
         while (true) {
-            System.out.println(prompt);
+            System.out.print("Enter " + fieldName + ": ");
             try {
-                userInput = Integer.parseInt(scanner.nextLine().trim());
-                break;
+                Integer userInput = Integer.parseInt(scanner.nextLine().trim());
+                SimulationConfigurationValidator.validateField(fieldName, userInput, validationConstraints);
+                return userInput;
             } catch (NumberFormatException e) {
                 System.out.println("Error: Please enter a valid numerical value.");
+            } catch (ValidationException e) {
+                System.out.println("Error: " + e.getMessage());
             }
         }
-        return userInput;
+        // todo : return the default, for this add a field called default in to the validation constraints db
     }
 }

@@ -23,7 +23,7 @@ public class Consumer implements Runnable {
     public void run() {
         for (int i = 0; i < this.totalTickets ; i++) {
             try {
-                Ticket removedTicket = this.ticketPool.removeTicket();
+                Ticket removedTicket = this.ticketPool.removeTicket(this.consumerId);
                 logger.info("Ticket removed by Consumer {}: {}", consumerId, removedTicket);
                 Thread.sleep(this.sleepTimeMilli);
             } catch (InterruptedException e) {

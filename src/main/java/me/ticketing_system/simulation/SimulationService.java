@@ -1,5 +1,6 @@
 package me.ticketing_system.simulation;
 
+import me.ticketing_system.ticketpool.Ticket;
 import me.ticketing_system.ticketpool.TicketPool;
 import me.ticketing_system.ticketpool.TicketPoolListChangeListener;
 import org.slf4j.Logger;
@@ -12,21 +13,32 @@ public class SimulationService extends Simulation {
     private final SimulationConfigurationValidator simulationValidator;
     private final Logger logger = LoggerFactory.getLogger(SimulationService.class);
     private final SimulationWebSocketService simulationWebSocketService;
+    private final Simulation simulation;
 
     public SimulationService(TicketPool ticketPool,
                              SimulationConfigurationValidator simulationValidator,
-                             SimulationWebSocketService simulationWebSocketService) {
+                             SimulationWebSocketService simulationWebSocketService, Simulation simulation) {
         super(ticketPool);
         this.simulationValidator = simulationValidator;
         this.simulationWebSocketService = simulationWebSocketService;
+        this.simulation = simulation;
     }
 
     public void subscribeToTicketPoolChanges() {
         this.ticketPool.addListener(new TicketPoolListChangeListener() {
             @Override
-            public void onSizeChanged(Integer newSize) {
-                simulationWebSocketService.broadcastSimulationStatus(getSimulationStatus());
-                logger.info("TicketPool Size Changed: {}", newSize);
+            public void onSizeChanged(Ticket ticket) {
+                SimulationStatus simulationStatus = getSimulationStatus();
+                SimulationStatus updatedSimulationStatus = new SimulationStatus(
+                        ticket,
+                        simulationStatus.totalActiveVendors(),
+                        simulationStatus.totalActiveConsumers(),
+                        simulationStatus.totalTickets()
+                );
+                simulationWebSocketService.broadcastSimulationStatus(
+                        updatedSimulationStatus
+                );
+                logger.info("Simulation Status {}", updatedSimulationStatus);
             }
         });
     }

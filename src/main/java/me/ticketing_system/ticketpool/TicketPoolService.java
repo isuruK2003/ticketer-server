@@ -14,9 +14,9 @@ public class TicketPoolService {
 
     public TicketPoolService() {this.ticketPool = new TicketPool();}
 
-    public Ticket removeTicket() {
+    public Ticket removeTicket(Integer removedByConsumerId) {
         try {
-            Ticket removedTicket = ticketPool.removeTicket();
+            Ticket removedTicket = ticketPool.removeTicket(removedByConsumerId);
             logger.info("Removed the ticket: {}", removedTicket);
             return removedTicket;
         } catch (InterruptedException e) {

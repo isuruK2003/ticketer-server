@@ -23,7 +23,7 @@ public class Vendor implements Runnable {
     public void run() {
         for (int i = 0; i < this.totalTickets ; i++) {
             try {
-                Ticket newTicket = new Ticket(i);
+                Ticket newTicket = new Ticket(i, this.vendorId);
                 this.ticketPool.addTicket(newTicket);
                 Thread.sleep(this.sleepTimeMilli);
                 logger.info("New ticket added by Vendor {}: {}", this.vendorId, newTicket);

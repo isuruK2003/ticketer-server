@@ -25,7 +25,7 @@ public class SimulationConfigurationValidator {
         validateField("consumerSleepTime", config.consumerSleepTime(), constraints);
     }
 
-    private void validateField(String fieldName, Integer value, Map<String, ValidationConstraint> constraints) {
+    public static void validateField(String fieldName, Integer value, Map<String, ValidationConstraint> constraints) {
         ValidationConstraint constraint = constraints.get(fieldName);
         if (constraint == null) {
             throw new ValidationException("Validation constraint for " + fieldName + " is not defined.");

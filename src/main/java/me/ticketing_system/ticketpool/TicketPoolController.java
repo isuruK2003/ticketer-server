@@ -23,7 +23,8 @@ public class TicketPoolController {
 	@MessageMapping("/remove-ticket")
 	@SendTo("/topic/ticketpool")
 	public List<Ticket> removeTicket() {
-		Ticket removedTicket = this.ticketPoolService.removeTicket();
+		// todo: removed by consumer id should come front frontend
+		Ticket removedTicket = this.ticketPoolService.removeTicket(null);
 		this.ticketPoolWebSocketService.broadcastTicketRemoval(removedTicket);
 		return this.ticketPoolService.getTicketPool();
 	}

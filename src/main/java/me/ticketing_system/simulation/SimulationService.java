@@ -13,16 +13,13 @@ public class SimulationService extends Simulation {
     private final SimulationConfigurationValidator simulationValidator;
     private final Logger logger = LoggerFactory.getLogger(SimulationService.class);
     private final SimulationWebSocketService simulationWebSocketService;
-    private final Simulation simulation;
 
     public SimulationService(TicketPool ticketPool,
                              SimulationConfigurationValidator simulationValidator,
-                             SimulationWebSocketService simulationWebSocketService,
-                             Simulation simulation) {
+                             SimulationWebSocketService simulationWebSocketService) {
         super(ticketPool);
         this.simulationValidator = simulationValidator;
         this.simulationWebSocketService = simulationWebSocketService;
-        this.simulation = simulation;
     }
 
     public void subscribeToTicketPoolChanges() {

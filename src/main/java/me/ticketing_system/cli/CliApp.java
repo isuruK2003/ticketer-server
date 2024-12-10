@@ -5,7 +5,7 @@ import me.ticketing_system.ticketpool.TicketPool;
 
 public class CliApp {
 
-    private static Simulation simulation = new Simulation(new TicketPool());
+    private static final Simulation simulation = new Simulation(new TicketPool());
 
     private static void configure() {
         simulation.setTotalVendors(CliUtilities.readConfigurationValue("totalVendors"));

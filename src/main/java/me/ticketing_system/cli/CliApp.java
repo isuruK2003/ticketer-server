@@ -9,11 +9,11 @@ public class CliApp {
 
     private static void configure() {
         simulation.setTotalVendors(CliUtilities.readConfigurationValue("totalVendors"));
-        simulation.setTotalConsumers(CliUtilities.readConfigurationValue("totalConsumer"));
+        simulation.setTotalConsumers(CliUtilities.readConfigurationValue("totalConsumers"));
         simulation.setTotalTicketsForVendor(CliUtilities.readConfigurationValue("totalTicketsForVendor"));
         simulation.setTotalTicketsForConsumer(CliUtilities.readConfigurationValue("totalTicketsForCustomer"));
-        simulation.setVendorSleepTimeMillis(CliUtilities.readConfigurationValue("vendorSleepTime"));
-        simulation.setConsumerSleepTimeMillis(CliUtilities.readConfigurationValue("consumerSleepTime"));
+        simulation.setTicketReleaseRate(CliUtilities.readConfigurationValue("vendorSleepTime"));
+        simulation.setCustomerRetrievalRate(CliUtilities.readConfigurationValue("customerRetrievalRate"));
     }
 
     private static void startSimulation() {

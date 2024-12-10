@@ -21,8 +21,9 @@ public class SimulationConfigurationValidator {
         validateField("totalTicketsForCustomer", config.totalTicketsForCustomer(), constraints);
         validateField("totalTicketsForVendor", config.totalTicketsForVendor(), constraints);
         validateField("totalVendors", config.totalVendors(), constraints);
-        validateField("vendorSleepTime", config.vendorSleepTime(), constraints);
-        validateField("consumerSleepTime", config.consumerSleepTime(), constraints);
+        validateField("ticketReleaseRate", config.ticketReleaseRate(), constraints);
+        validateField("customerRetrievalRate", config.customerRetrievalRate(), constraints);
+        validateField("maxTicketCapacity", config.maxTicketCapacity(), constraints);
     }
 
     public static void validateField(String fieldName, Integer value, Map<String, ValidationConstraint> constraints) {

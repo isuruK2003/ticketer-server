@@ -4,7 +4,8 @@ public record SimulationConfiguration(
         Integer totalTicketsForVendor,
         Integer totalTicketsForCustomer,
         Integer totalVendors,
-        Integer totalConsumer, // todo: change to totalConsumers
-        Integer vendorSleepTime,
-        Integer consumerSleepTime
+        Integer totalConsumers,
+        Integer ticketReleaseRate,
+        Integer customerRetrievalRate,
+        Integer maxTicketCapacity
 ) { }

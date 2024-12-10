@@ -8,14 +8,14 @@ import org.slf4j.LoggerFactory;
 public class Consumer implements Runnable {
     private final Integer consumerId;
     private final TicketPool ticketPool;
-    private final Integer sleepTimeMilli;
+    private final Integer customerRetrievalRate;
     private final Integer totalTickets;
     private final Logger logger = LoggerFactory.getLogger(Consumer.class);
 
-    public Consumer(Integer consumerId, TicketPool ticketPool, Integer sleepTimeMilli, Integer totalTickets) {
+    public Consumer(Integer consumerId, TicketPool ticketPool, Integer customerRetrievalRate, Integer totalTickets) {
         this.consumerId = consumerId;
         this.ticketPool = ticketPool;
-        this.sleepTimeMilli = sleepTimeMilli;
+        this.customerRetrievalRate = customerRetrievalRate;
         this.totalTickets = totalTickets;
     }
 
@@ -25,7 +25,7 @@ public class Consumer implements Runnable {
             try {
                 Ticket removedTicket = this.ticketPool.removeTicket(this.consumerId);
                 logger.info("Ticket removed by Consumer {}: {}", consumerId, removedTicket);
-                Thread.sleep(this.sleepTimeMilli);
+                Thread.sleep(this.customerRetrievalRate*1000);
             } catch (InterruptedException e) {
                 logger.error("Error occurred at Consumer at run() : {}", e.getMessage());
                 break;

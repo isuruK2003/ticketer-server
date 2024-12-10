@@ -17,7 +17,8 @@ public class SimulationService extends Simulation {
 
     public SimulationService(TicketPool ticketPool,
                              SimulationConfigurationValidator simulationValidator,
-                             SimulationWebSocketService simulationWebSocketService, Simulation simulation) {
+                             SimulationWebSocketService simulationWebSocketService,
+                             Simulation simulation) {
         super(ticketPool);
         this.simulationValidator = simulationValidator;
         this.simulationWebSocketService = simulationWebSocketService;
@@ -50,11 +51,12 @@ public class SimulationService extends Simulation {
         simulationValidator.validate(config); // throws validation error if config is not invalid
         this.setTotalTicketsForConsumer(config.totalTicketsForCustomer());
         this.setTotalTicketsForVendor(config.totalTicketsForVendor());
-        this.setConsumerSleepTimeMillis(config.consumerSleepTime());
-        this.setVendorSleepTimeMillis(config.vendorSleepTime());
+        this.setCustomerRetrievalRate(config.customerRetrievalRate());
+        this.setTicketReleaseRate(config.ticketReleaseRate());
         this.setTotalVendors(config.totalVendors());
-        this.setTotalConsumers(config.totalConsumer());
-        logger.info("Simulation configured Configured Successfully : {}", config);
+        this.setTotalConsumers(config.totalConsumers());
+        this.setMaxTicketCapacity(config.maxTicketCapacity());
+        logger.info("Simulation Configured Successfully : {}", config);
     }
 
     public void initializeVendors() {

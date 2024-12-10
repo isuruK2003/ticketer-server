@@ -8,14 +8,14 @@ import org.slf4j.LoggerFactory;
 public class Vendor implements Runnable {
     private final Integer vendorId;
     private final TicketPool ticketPool;
-    private final Integer sleepTimeMilli;
+    private final Integer ticketReleaseRate;
     private final Integer totalTickets;
     private final Logger logger = LoggerFactory.getLogger(Vendor.class);
 
-    public Vendor(Integer vendorId, TicketPool ticketPool, Integer sleepTimeMilli, Integer totalTickets) {
+    public Vendor(Integer vendorId, TicketPool ticketPool, Integer ticketReleaseRate, Integer totalTickets) {
         this.vendorId = vendorId;
         this.ticketPool = ticketPool;
-        this.sleepTimeMilli = sleepTimeMilli;
+        this.ticketReleaseRate = ticketReleaseRate;
         this.totalTickets = totalTickets;
     }
 
@@ -25,7 +25,7 @@ public class Vendor implements Runnable {
             try {
                 Ticket newTicket = new Ticket(i, this.vendorId);
                 this.ticketPool.addTicket(newTicket);
-                Thread.sleep(this.sleepTimeMilli);
+                Thread.sleep(this.ticketReleaseRate*1000);
                 logger.info("New ticket added by Vendor {}: {}", this.vendorId, newTicket);
             } catch (InterruptedException e) {
                 logger.error("Error occurred at Vendor at run() : {}", e.getMessage());

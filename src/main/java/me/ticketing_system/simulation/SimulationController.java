@@ -5,14 +5,18 @@ import me.ticketing_system.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/simulation")
 @CrossOrigin
 public class SimulationController {
     private final SimulationService simulationService;
+    private final SimulationConfigurationRepository simulationConfigurationRepository;
 
-    public SimulationController(SimulationService simulationService) {
+    public SimulationController(SimulationService simulationService, SimulationConfigurationRepository simulationConfigurationRepository) {
         this.simulationService = simulationService;
+        this.simulationConfigurationRepository = simulationConfigurationRepository;
         this.simulationService.subscribeToTicketPoolChanges(); // todo: make this subscription to be done from the client side
     }
 
@@ -22,6 +26,18 @@ public class SimulationController {
     @PostMapping("/configure")
     public void configureSimulation(@RequestBody SimulationConfiguration simulationConfiguration) {
         simulationService.configureSimulation(simulationConfiguration);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PostMapping("/save-configuration")
+    public void saveConfiguration(@RequestBody SimulationConfiguration simulationConfiguration) {
+        simulationConfigurationRepository.createConfig(simulationConfiguration);
+    }
+
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @GetMapping("get-saved-configurations")
+    public List<SimulationConfiguration> getSavedConfigurations() {
+        return simulationConfigurationRepository.findAll();
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)

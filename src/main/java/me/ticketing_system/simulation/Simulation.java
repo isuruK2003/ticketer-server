@@ -14,8 +14,8 @@ public class Simulation {
 
     private Integer totalVendors;
     private Integer totalConsumers;
-    private Integer vendorSleepTimeMillis;
-    private Integer consumerSleepTimeMillis;
+    private Integer ticketReleaseRate;
+    private Integer customerRetrievalRate;
     private Integer totalTicketsForVendor;
     private Integer totalTicketsForConsumer;
 
@@ -34,7 +34,7 @@ public class Simulation {
 
     public void initializeVendorThreads() {
         for (int i = 0; i < this.totalVendors; i++) {
-            Vendor vendor = new Vendor(i, this.ticketPool, this.vendorSleepTimeMillis, this.totalTicketsForVendor);
+            Vendor vendor = new Vendor(i, this.ticketPool, this.ticketReleaseRate, this.totalTicketsForVendor);
             Thread t = new Thread(vendor);
             vendorThreads.add(t);
         }
@@ -42,7 +42,7 @@ public class Simulation {
 
     public void initializeConsumerThreads() {
         for (int i = 0; i < this.totalConsumers; i++) {
-            Consumer consumer = new Consumer(i, this.ticketPool, this.consumerSleepTimeMillis, this.totalTicketsForConsumer);
+            Consumer consumer = new Consumer(i, this.ticketPool, this.customerRetrievalRate, this.totalTicketsForConsumer);
             Thread t = new Thread(consumer);
             consumerThreads.add(t);
         }
@@ -82,12 +82,12 @@ public class Simulation {
 
     //////// Setters ////////
 
-    public void setConsumerSleepTimeMillis(Integer consumerSleepTimeMillis) {
-        this.consumerSleepTimeMillis = consumerSleepTimeMillis;
+    public void setCustomerRetrievalRate(Integer customerRetrievalRate) {
+        this.customerRetrievalRate = customerRetrievalRate;
     }
 
-    public void setVendorSleepTimeMillis(Integer vendorSleepTimeMillis) {
-        this.vendorSleepTimeMillis = vendorSleepTimeMillis;
+    public void setTicketReleaseRate(Integer ticketReleaseRate) {
+        this.ticketReleaseRate = ticketReleaseRate;
     }
 
     public void setTotalTicketsForConsumer(Integer totalTicketsForConsumer) {
@@ -106,6 +106,10 @@ public class Simulation {
         this.totalConsumers = totalConsumers;
     }
 
+    public void setMaxTicketCapacity(Integer maxTicketCapacity) {
+        this.ticketPool.setMaxTicketCapacity(maxTicketCapacity);
+    }
+
     ///////// Clearer's ////////
 
     public void clearConsumerThreads() {
@@ -119,8 +123,8 @@ public class Simulation {
     //////// Checkers ////////
 
     public Boolean hasConfigured() {
-        return (this.vendorSleepTimeMillis != null
-                && this.consumerSleepTimeMillis != null
+        return (this.ticketReleaseRate != null
+                && this.customerRetrievalRate != null
                 && this.totalTicketsForVendor != null
                 && this.totalTicketsForConsumer != null
                 && this.totalVendors != null

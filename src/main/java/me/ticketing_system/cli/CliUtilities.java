@@ -1,7 +1,6 @@
 package me.ticketing_system.cli;
 
 import jakarta.validation.ValidationException;
-import me.ticketing_system.GlobalConstants;
 import me.ticketing_system.validations.ValidationConstraint;
 import me.ticketing_system.validations.ValidationConstraintService;
 import me.ticketing_system.simulation.SimulationConfigurationValidator;
@@ -14,7 +13,6 @@ import java.util.Scanner;
 public class CliUtilities {
 
     private static final Scanner scanner = new Scanner(System.in);
-    private static final Logger logger = LoggerFactory.getLogger(CliUtilities.class);
     private static final Map<String, ValidationConstraint> validationConstraints = ValidationConstraintService.loadFromJson();
 
     private static String toSentenceCase(String str) {

@@ -23,7 +23,7 @@ public class Vendor implements Runnable {
             try {
                 Ticket newTicket = new Ticket(i, this.vendorId);
                 this.ticketPool.addTicket(newTicket);
-                Thread.sleep(this.ticketReleaseRate*1000);
+                Thread.sleep(1000 / this.ticketReleaseRate);
                 logger.info("New ticket added by Vendor {}: {}", this.vendorId, newTicket);
             } catch (InterruptedException e) {
                 logger.error("Error occurred at Vendor at run() : {}", e.getMessage());

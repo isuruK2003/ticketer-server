@@ -21,7 +21,7 @@ import java.util.Map;
 public class ValidationConstraintService {
 
     private final JdbcTemplate jdbcTemplate;
-    private static final Gson gson = new Gson();;
+    private static final Gson gson = new Gson();
     private static final Logger logger = LoggerFactory.getLogger(ValidationConstraintService.class);
 
     public ValidationConstraintService(JdbcTemplate jdbcTemplate) {

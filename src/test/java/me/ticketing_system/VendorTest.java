@@ -1,6 +1,5 @@
 package me.ticketing_system;
 
-import me.ticketing_system.ticketpool.Ticket;
 import me.ticketing_system.ticketpool.TicketPool;
 import me.ticketing_system.ticketpool.Vendor;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +15,6 @@ class VendorTest {
     void setUp() {
         // Initialize the TicketPool before each test
         ticketPool = new TicketPool();
-        Ticket ticket = new Ticket(1, 100);  // Example ticket with ID 1 and Vendor ID 100
         ticketPool.setMaxTicketCapacity(3); // Set a small max capacity for testing
     }
 

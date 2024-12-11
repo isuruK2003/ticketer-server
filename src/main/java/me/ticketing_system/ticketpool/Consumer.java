@@ -23,7 +23,7 @@ public class Consumer implements Runnable {
             try {
                 Ticket removedTicket = this.ticketPool.removeTicket(this.consumerId);
                 logger.info("Ticket removed by Consumer {}: {}", consumerId, removedTicket);
-                Thread.sleep(this.customerRetrievalRate*1000);
+                Thread.sleep(1000 / this.customerRetrievalRate);
             } catch (InterruptedException e) {
                 logger.error("Error occurred at Consumer at run() : {}", e.getMessage());
                 break;

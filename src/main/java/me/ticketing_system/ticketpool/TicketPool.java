@@ -58,18 +58,17 @@ public class TicketPool {
         ticketPoolChangeListeners.add(listener);
     }
 
-    public void removeListener(TicketPoolListChangeListener listener) {
-        ticketPoolChangeListeners.remove(listener);
-    }
-
     //// Getters and Setters ////
 
     public void setMaxTicketCapacity(Integer maxTicketCapacity) {
         this.maxTicketCapacity = maxTicketCapacity;
-        // todo : check for any error happens
     }
 
     public List<Ticket> getTickets() {
         return tickets;
+    }
+
+    public int getMaxTicketCapacity() {
+        return maxTicketCapacity;
     }
 }

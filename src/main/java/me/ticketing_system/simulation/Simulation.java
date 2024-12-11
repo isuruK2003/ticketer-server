@@ -1,6 +1,8 @@
 package me.ticketing_system.simulation;
 
+import me.ticketing_system.ticketpool.Consumer;
 import me.ticketing_system.ticketpool.TicketPool;
+import me.ticketing_system.ticketpool.Vendor;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -29,8 +31,6 @@ public class Simulation {
         this.consumersStarted = false;
         this.vendorsStarted = false;
     }
-
-    //////// Initializers ////////
 
     public void initializeVendorThreads() {
         for (int i = 0; i < this.totalVendors; i++) {
@@ -110,6 +110,14 @@ public class Simulation {
         this.ticketPool.setMaxTicketCapacity(maxTicketCapacity);
     }
 
+    public void setConsumersStarted(Boolean consumersStarted) {
+        this.consumersStarted = consumersStarted;
+    }
+
+    public void setVendorsStarted(Boolean vendorsStarted) {
+        this.vendorsStarted = vendorsStarted;
+    }
+
     ///////// Clearer's ////////
 
     public void clearConsumerThreads() {
@@ -118,6 +126,10 @@ public class Simulation {
 
     public void clearVendorThreads() {
         this.vendorThreads.clear();
+    }
+
+    public void clearTickets() {
+        this.ticketPool.getTickets().clear();
     }
 
     //////// Checkers ////////

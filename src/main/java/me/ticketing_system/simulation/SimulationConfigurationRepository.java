@@ -22,22 +22,23 @@ public class SimulationConfigurationRepository {
     }
 
     public void createConfig(SimulationConfiguration newConfig) {
-        String sqlQuarry = """
-                INSERT INTO simulation_configurations
-                    (totalTicketsForVendor, totalTicketsForCustomer, totalVendors, totalConsumers, ticketReleaseRate, customerRetrievalRate, maxTicketCapacity)
-                VALUES
-                    (?, ?, ?, ?, ?, ?)
-                """;
-        int created = jdbcClient.sql(sqlQuarry)
+        String sqlQuery = """
+            INSERT INTO simulation_configurations
+                (totalTicketsForVendor, totalTicketsForCustomer, totalVendors, totalConsumers, ticketReleaseRate, customerRetrievalRate, maxTicketCapacity)
+            VALUES
+                (?, ?, ?, ?, ?, ?, ?)
+            """;
+        int created = jdbcClient.sql(sqlQuery)
                 .params(List.of(
                         newConfig.totalTicketsForVendor(),
                         newConfig.totalTicketsForCustomer(),
                         newConfig.totalVendors(),
                         newConfig.totalConsumers(),
                         newConfig.ticketReleaseRate(),
-                        newConfig.customerRetrievalRate()))
+                        newConfig.customerRetrievalRate(),
+                        newConfig.maxTicketCapacity()
+                ))
                 .update();
-
         Assert.state(created == 1, "Failed to create the configuration: " + newConfig);
     }
 

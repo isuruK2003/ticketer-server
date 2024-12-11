@@ -2,8 +2,8 @@ package me.ticketing_system.cli;
 
 import jakarta.validation.ValidationException;
 import me.ticketing_system.GlobalConstants;
-import me.ticketing_system.ValidationConstraint;
-import me.ticketing_system.ValidationConstraintService;
+import me.ticketing_system.validations.ValidationConstraint;
+import me.ticketing_system.validations.ValidationConstraintService;
 import me.ticketing_system.simulation.SimulationConfigurationValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,30 +15,33 @@ public class CliUtilities {
 
     private static final Scanner scanner = new Scanner(System.in);
     private static final Logger logger = LoggerFactory.getLogger(CliUtilities.class);
-    private static final Map<String, ValidationConstraint> validationConstraints = readValidatorConstraints();
+    private static final Map<String, ValidationConstraint> validationConstraints = ValidationConstraintService.loadFromJson();
 
-    private static Map<String, ValidationConstraint> readValidatorConstraints() {
-        try {
-            return ValidationConstraintService.loadFromJson();
-        } catch (RuntimeException e) {
-            logger.error("Cannot read the {}: ", GlobalConstants.validationConstraintsFileName + ": " + e.getMessage());
+    private static String toSentenceCase(String str) {
+        StringBuilder res = new StringBuilder();
+        for (int i = 0; i < str.length(); i++) {
+            char c = str.charAt(i);
+            if (Character.isUpperCase(c)) {
+                res.append(" ").append(Character.toLowerCase(c));
+                continue;
+            }
+            res.append(c);
         }
-        return null;
+        return res.toString();
     }
 
     public static Integer readConfigurationValue(String fieldName) {
         while (true) {
-            System.out.print("Enter " + fieldName + ": ");
+            System.out.print("> Enter " + toSentenceCase(fieldName) + ": ");
             try {
                 Integer userInput = Integer.parseInt(scanner.nextLine().trim());
                 SimulationConfigurationValidator.validateField(fieldName, userInput, validationConstraints);
                 return userInput;
             } catch (NumberFormatException e) {
-                System.out.println("Error: Please enter a valid numerical value.");
+                System.out.println("\u001B[31m" + "Error: Please enter a valid numerical value." + "\u001B[0m");
             } catch (ValidationException e) {
-                System.out.println("Error: " + e.getMessage());
+                System.out.println("\u001B[31m" + "Error: " + toSentenceCase(e.getMessage()) + "\u001B[0m");
             }
         }
-        // todo : return the default, for this add a field called default in to the validation constraints db
     }
 }

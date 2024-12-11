@@ -1,4 +1,4 @@
-package me.ticketing_system;
+package me.ticketing_system.validations;
 
 import com.google.gson.*;
 

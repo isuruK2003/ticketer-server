@@ -12,8 +12,9 @@ public class CliApp {
         simulation.setTotalConsumers(CliUtilities.readConfigurationValue("totalConsumers"));
         simulation.setTotalTicketsForVendor(CliUtilities.readConfigurationValue("totalTicketsForVendor"));
         simulation.setTotalTicketsForConsumer(CliUtilities.readConfigurationValue("totalTicketsForCustomer"));
-        simulation.setTicketReleaseRate(CliUtilities.readConfigurationValue("vendorSleepTime"));
+        simulation.setTicketReleaseRate(CliUtilities.readConfigurationValue("ticketReleaseRate"));
         simulation.setCustomerRetrievalRate(CliUtilities.readConfigurationValue("customerRetrievalRate"));
+        simulation.setMaxTicketCapacity(CliUtilities.readConfigurationValue("maxTicketCapacity"));
     }
 
     private static void startSimulation() {
@@ -32,6 +33,8 @@ public class CliApp {
 
     public static void main(String[] args) {
         configure();
+        System.out.println("Configuration Successful!");
+        System.out.println("Starting simulation ...");
         startSimulation();
     }
 }

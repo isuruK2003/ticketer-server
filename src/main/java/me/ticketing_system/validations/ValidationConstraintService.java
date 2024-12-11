@@ -1,8 +1,9 @@
-package me.ticketing_system;
+package me.ticketing_system.validations;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import me.ticketing_system.GlobalConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -12,7 +13,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,17 +29,22 @@ public class ValidationConstraintService {
     }
 
     public Map<String, ValidationConstraint> loadConstraints() {
-        String sql = "SELECT field_name, min_value, max_value FROM simulation_configuration_validation_constraints";
-        List<ValidationConstraint> constraints = jdbcTemplate.query(sql, (rs, rowNum) ->
-                new ValidationConstraint(
-                        rs.getString("field_name"),
-                        rs.getInt("min_value"),
-                        rs.getInt("max_value")
-                )
-        );
-        Map<String, ValidationConstraint> map = toMap(constraints);
-        saveToJson(map);
-        return map;
+        try {
+            String sql = "SELECT field_name, min_value, max_value FROM simulation_configuration_validation_constraints";
+            List<ValidationConstraint> constraints = jdbcTemplate.query(sql, (rs, rowNum) ->
+                    new ValidationConstraint(
+                            rs.getString("field_name"),
+                            rs.getInt("min_value"),
+                            rs.getInt("max_value")
+                    )
+            );
+            Map<String, ValidationConstraint> map = toMap(constraints);
+            saveToJson(map);
+            return map;
+        } catch (Exception e) {
+            logger.error("Error occurred while loading the constraints: {}", e.getMessage());
+            return GlobalConstants.DEFAULT_VALIDATION_CONSTRAINTS;
+        }
     }
 
     private static Map<String, ValidationConstraint> toMap(List<ValidationConstraint> constraints) {
@@ -57,6 +62,8 @@ public class ValidationConstraintService {
             logger.info("Successfully saved to {}", GlobalConstants.validationConstraintsFileName);
         } catch (IOException e) {
             logger.error("Error occurred while saving the constraints: {}", e.getMessage());
+        } catch (Exception e) {
+            logger.error("Unexpected error occurred while saving the constraints: {}", e.getMessage());
         }
     }
 
@@ -67,7 +74,10 @@ public class ValidationConstraintService {
                     .create();
             return gson.fromJson(reader, new TypeToken<Map<String, ValidationConstraint>>() {}.getType());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            logger.error("Error occurred while loading the constraints from jsonFile: {}", e.getMessage());
+        } catch (Exception e) {
+            logger.error("Unexpected error occurred while loading the constraints from jsonFile: {}", e.getMessage());
         }
+        return GlobalConstants.DEFAULT_VALIDATION_CONSTRAINTS;
     }
 }

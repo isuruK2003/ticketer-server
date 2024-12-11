@@ -1,8 +1,8 @@
 package me.ticketing_system.simulation;
 
 import jakarta.validation.ValidationException;
-import me.ticketing_system.ValidationConstraint;
-import me.ticketing_system.ValidationConstraintService;
+import me.ticketing_system.validations.ValidationConstraint;
+import me.ticketing_system.validations.ValidationConstraintService;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;

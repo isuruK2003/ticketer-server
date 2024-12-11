@@ -1,7 +1,7 @@
 package me.ticketing_system.simulation;
 
 import jakarta.validation.ValidationException;
-import me.ticketing_system.ErrorResponse;
+import me.ticketing_system.GlobalErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -88,17 +88,23 @@ public class SimulationController {
         simulationService.clearConsumers();
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @GetMapping("clear-ticket-pool")
+    public void clearTicketPool() {
+        simulationService.clearTicketPool();
+    }
+
     //// Exception handlers ////
 
     @ExceptionHandler(value = ValidationException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorResponse handleValidationException(ValidationException ex) {
-        return new ErrorResponse(HttpStatus.CONFLICT.value(), ex.getMessage());
+    public GlobalErrorResponse handleValidationException(ValidationException ex) {
+        return new GlobalErrorResponse(HttpStatus.CONFLICT.value(), ex.getMessage());
     }
 
     @ExceptionHandler(value = RuntimeException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorResponse handleRuntimeException(RuntimeException ex) {
-        return new ErrorResponse(HttpStatus.CONFLICT.value(), ex.getMessage());
+    public GlobalErrorResponse handleRuntimeException(RuntimeException ex) {
+        return new GlobalErrorResponse(HttpStatus.CONFLICT.value(), ex.getMessage());
     }
 }

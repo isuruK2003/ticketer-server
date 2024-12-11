@@ -1,7 +1,5 @@
-package me.ticketing_system.simulation;
+package me.ticketing_system.ticketpool;
 
-import me.ticketing_system.ticketpool.Ticket;
-import me.ticketing_system.ticketpool.TicketPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

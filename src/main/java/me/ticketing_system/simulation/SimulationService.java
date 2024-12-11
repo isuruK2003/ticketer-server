@@ -121,6 +121,7 @@ public class SimulationService extends Simulation {
             throw new RuntimeException("Vendor threads are already started");
         }
         clearVendorThreads();
+        setVendorsStarted(false);
         logger.info("Vendor threads cleared successfully ");
     }
 
@@ -129,6 +130,13 @@ public class SimulationService extends Simulation {
             throw new RuntimeException("Consumer threads are already started");
         }
         clearConsumerThreads();
+        this.setConsumersStarted(false);
         logger.info("Consumer threads cleared successfully ");
+    }
+
+    public void clearTicketPool() {
+        this.clearTickets();
+        this.simulationWebSocketService.broadcastSimulationStatus(getSimulationStatus());
+        logger.info("Ticket pool cleared successfully ");
     }
 }

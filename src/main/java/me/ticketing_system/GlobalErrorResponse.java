@@ -1,6 +1,6 @@
 package me.ticketing_system;
 
-public record ErrorResponse (
+public record GlobalErrorResponse(
     Integer status,
     String message
 ) {}

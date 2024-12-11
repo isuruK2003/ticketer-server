@@ -1,4 +1,4 @@
-package me.ticketing_system;
+package me.ticketing_system.validations;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

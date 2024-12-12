@@ -1,0 +1,9 @@
+services:
+  postgres:
+    image: 'postgres:latest'
+    environment:
+      - 'POSTGRES_DB=ticketing-system'
+      - 'POSTGRES_PASSWORD=0010101'
+      - 'POSTGRES_USER=isuruK2003'
+    ports:
+      - '5432:5432' # Mapping 5432 to local 5432 on local machine

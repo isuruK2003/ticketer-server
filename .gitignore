@@ -17,11 +17,6 @@ buildNumber.properties
 .classpath
 
 # My files
-compose.yml
-schema.sql
-data.sql
-validation_constraints.json
-qodana.yaml
 
 # Added by intellij
 # `````````````````

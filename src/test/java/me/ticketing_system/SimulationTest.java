@@ -108,7 +108,7 @@ class SimulationTest {
     }
 
     @Test
-    void testClearVendorThreadsEmptiesVendorThreadsList() {
+    void testClearVendorThreads() {
         simulation.setTotalVendors(2);
         simulation.setTicketReleaseRate(10);
         simulation.setTotalTicketsForVendor(100);
@@ -120,7 +120,7 @@ class SimulationTest {
     }
 
     @Test
-    void testClearConsumerThreadsEmptiesConsumerThreadsList() {
+    void testClearConsumerThreads() {
         simulation.setTotalConsumers(2);
         simulation.setCustomerRetrievalRate(5);
         simulation.setTotalTicketsForConsumer(50);

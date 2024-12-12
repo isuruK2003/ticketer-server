@@ -17,7 +17,7 @@ public class SimulationController {
     public SimulationController(SimulationService simulationService, SimulationConfigurationRepository simulationConfigurationRepository) {
         this.simulationService = simulationService;
         this.simulationConfigurationRepository = simulationConfigurationRepository;
-        this.simulationService.subscribeToTicketPoolChanges(); // todo: make this subscription to be done from the client side
+        this.simulationService.subscribeToTicketPoolChanges();
     }
 
     //// Response Mapping ////

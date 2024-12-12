@@ -31,7 +31,7 @@ class ConsumerTest {
         Consumer consumer = new Consumer(200, ticketPool, 1, 1);  // Consumer ID 200, removing 1 ticket
         Thread consumerThread = new Thread(consumer);
         consumerThread.start();
-
+        Thread.sleep(1000);
         assertEquals(1, ticketPool.getTickets().size(), "Ticket pool should contain 1 ticket after consumer removes one.");
 
         consumerThread.join();

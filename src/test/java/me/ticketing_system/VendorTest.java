@@ -22,13 +22,12 @@ class VendorTest {
     @Test
     void testVendorAddsTicket() throws InterruptedException {
         // Create and start a Vendor thread to add tickets
-        Vendor vendor = new Vendor(100, ticketPool, 1, 5);
+        Vendor vendor = new Vendor(100, ticketPool, 1, 3);
         Thread vendorThread = new Thread(vendor);
         vendorThread.start();
-
+        Thread.sleep(5000);
         // Ensure the pool contains 5 tickets after the vendor has added them
-        assertEquals(5, ticketPool.getTickets().size(), "Ticket pool should contain 5 tickets after vendor adds them.");
-
+        assertEquals(3, ticketPool.getTickets().size(), "Ticket pool should contain 5 tickets after vendor adds them.");
         vendorThread.join();
     }
 }

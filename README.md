@@ -38,7 +38,7 @@ Ensure the following software is installed on your system:
    git clone git@github.com:isuruK2003/ticketer-server.git 
    cd ticketer-server
    ```
-2. Create a `compose.yml` file
+2. Create a `compose.yml` file in "ticketing-server" directory
    Include your details in following format:
    ```bash
    services:
@@ -47,7 +47,7 @@ Ensure the following software is installed on your system:
    	environment:
    		- 'POSTGRES_DB=ticketing-system'
    		- 'POSTGRES_PASSWORD=<YOUR POSTGRES PASSWORD>'
-   		- 'POSTGRES_USER=<YOUR POSTGRE USERNAME>'
+   		- 'POSTGRES_USER=<YOUR POSTGRES USERNAME>'
    ports:
 	- '5432:5432' # Mapping 5432 to local 5432 on local machine
    ```

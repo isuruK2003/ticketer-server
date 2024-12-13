@@ -38,7 +38,20 @@ Ensure the following software is installed on your system:
    git clone git@github.com:isuruK2003/ticketer-server.git 
    cd ticketer-server
    ```
-2. Start the backend:
+2. Create a `compose.yml` file
+   Include your details in following format:
+   ```bash
+   services:
+   postgres:
+   	image: 'postgres:latest'
+   	environment:
+   		- 'POSTGRES_DB=ticketing-system'
+   		- 'POSTGRES_PASSWORD=<YOUR POSTGRES PASSWORD>'
+   		- 'POSTGRES_USER=<YOUR POSTGRE USERNAME>'
+   ports:
+	- '5432:5432' # Mapping 5432 to local 5432 on local machine
+   ```
+3. Start the backend:
    ```bash
    ./mvnw spring-boot:run
    ```
